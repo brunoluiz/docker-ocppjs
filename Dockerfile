@@ -22,7 +22,7 @@ RUN apt-get install -y nodejs \
 #   - It will throw an error no node-expat compilation
 RUN cd /root/ && \
   wget https://github.com/brnluiz/docker-ocppjs/raw/master/gir-ocppjs-1.0.2.original.zip && \
-  unzip -o gir-ocppjs-1.0.2.zip -d . && \
+  unzip -o gir-ocppjs-1.0.2.original.zip -d . && \
   cd gir-ocppjs-1.0.2 && \
   npm install || true
 
