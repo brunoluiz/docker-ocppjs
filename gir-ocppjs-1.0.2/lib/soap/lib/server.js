@@ -267,7 +267,7 @@ Server.prototype._envelope = function(body) {
             this.cbId +"</tns:chargeBoxIdentity>"
           : "",
         actionHeader = this.action ?
-          "<wsa5:Action soap:mustUnderstand='true'>/"+
+          "<wsa5:Action soap:mustUnderstand='true'>"+
             this.action +"Response</wsa5:Action>"
           : "",
         relatesTo = "<wsa:RelatesTo RelationshipType='http://www.w3.org/2005/08/addressing/reply' soap:mustUnderstand='true'>"+
@@ -278,7 +278,7 @@ Server.prototype._envelope = function(body) {
             "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" " +
                encoding +
                this.wsdl.xmlnsInEnvelope + '>' +
-               "<soap:Header>"+ cbIdHeader + actionHeader +"</soap:Header>" +
+               "<soap:Header>"+ cbIdHeader + actionHeader + relatesTo +"</soap:Header>" +
                 "<soap:Body>" +
                     body +
                 "</soap:Body>" +
