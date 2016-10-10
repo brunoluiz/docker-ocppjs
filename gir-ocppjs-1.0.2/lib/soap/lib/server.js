@@ -144,6 +144,7 @@ Server.prototype._process = function(input, URL, callback) {
     // XXX modif lib: for adding chargeboxidentity header
     this.cbId = obj.Header.chargeBoxIdentity;
     this.action = obj.Header.Action;
+    this.messageId = obj.Header.MessageID;
 
     // use port.location and current url to find the right binding
     binding = (function(self){
@@ -242,6 +243,19 @@ Server.prototype._executeMethod = function(options, callback) {
     }
 }
 
+/*
+<SOAP-ENV:Envelope
+xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
+xmlns:ocppCs15="urn://Ocpp/Cp/2012/06/"
+xmlns:wsa="http://www.w3.org/2005/08/addressing" >
+<SOAP-ENV:Header>
+  <wsa:Action>/ACTION</wsa:Action>
+  <wsa:RelatesTo RelationshipType="http://www.w3.org/2005/08/addressing/reply">HRELMESSIDTO</wsa:RelatesTo>
+  <wsa:To>HTO</wsa:To>
+  <wsa:MessageID>HMESSID</wsa:MessageID>
+</SOAP-ENV:Header>
+*/
+
 Server.prototype._envelope = function(body) {
     var defs = this.wsdl.definitions,
         ns = defs.$targetNamespace,
@@ -253,9 +267,12 @@ Server.prototype._envelope = function(body) {
             this.cbId +"</tns:chargeBoxIdentity>"
           : "",
         actionHeader = this.action ?
-          "<wsa5:Action soap:mustUnderstand='true'>"+
+          "<wsa5:Action soap:mustUnderstand='true'>/"+
             this.action +"</wsa5:Action>"
-          : "";
+          : "",
+        relatesTo = "<wsa:RelatesTo RelationshipType='http://www.w3.org/2005/08/addressing/reply' soap:mustUnderstand='true'>"+
+            this.messageId
+            +"</wsa5:Action>";
 
     var xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
             "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" " +
