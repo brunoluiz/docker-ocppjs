@@ -254,7 +254,7 @@ Server.prototype._envelope = function(body) {
           : "",
         actionHeader = this.action ?
           "<wsa5:Action soap:mustUnderstand='true'>"+
-            this.action +"Response</wsa5:Action>"
+            this.action +"</wsa5:Action>"
           : "";
 
     var xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
