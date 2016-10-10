@@ -270,7 +270,7 @@ Server.prototype._envelope = function(body) {
           "<wsa5:Action soap:mustUnderstand='true'>"+
             this.action +"Response</wsa5:Action>"
           : "",
-        relatesTo = "<wsa:RelatesTo RelationshipType='http://www.w3.org/2005/08/addressing/reply' soap:mustUnderstand='true'>"+
+        relatesTo = "<wsa5:RelatesTo RelationshipType='http://www.w3.org/2005/08/addressing/reply' soap:mustUnderstand='true'>"+
             this.messageId
             +"</wsa5:RelatesTo>";
 
