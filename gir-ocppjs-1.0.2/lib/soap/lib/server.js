@@ -15,7 +15,7 @@ try { compress = require("compress"); } catch(e) {}
 var Server = function(server, path, services, wsdl) {
     var self = this,
         listeners = server.listeners('request');
-                
+
     this.services = services;
     this.wsdl = wsdl;
     if (path[path.length-1] != '/') path += '/';
@@ -36,9 +36,9 @@ var Server = function(server, path, services, wsdl) {
             else {
                 for (var i = 0, len = listeners.length; i < len; i++){
                   listeners[i].call(this, req, res);
-                }            
+                }
             }
-        });        
+        });
     })
 }
 
@@ -66,7 +66,7 @@ Server.prototype._requestListener = function(req, res) {
         res.setHeader('Content-Type', req.headers['content-type']);
         var chunks = [], gunzip;
         if (compress && req.headers["content-encoding"] == "gzip") {
-            gunzip = new compress.Gunzip;    
+            gunzip = new compress.Gunzip;
             gunzip.init();
         }
         req.on('data', function(chunk) {
@@ -123,7 +123,7 @@ Server.prototype._process = function(input, URL, callback) {
         pathname = url.parse(URL).pathname.replace(/\/$/,''),
         obj = this.wsdl.xmlToObject(input),
         body = obj.Body,
-        bindings = this.wsdl.definitions.bindings, binding, 
+        bindings = this.wsdl.definitions.bindings, binding,
         methods, method, methodName,
         serviceName, portName;
 
@@ -135,7 +135,7 @@ Server.prototype._process = function(input, URL, callback) {
         throw new Error('Invalid username or password');
       }
     }
-    
+
     // XXX modif lib: get remote address
     self.setRemoteAddress(obj.Header.chargeBoxIdentity,
       obj.Header.From && obj.Header.From.Address,
@@ -155,7 +155,7 @@ Server.prototype._process = function(input, URL, callback) {
                 var port = ports[portName];
                 var portPathname = url.parse(port.location).pathname.replace(/\/$/,'');
                 // XXX modif lib: permit customized endpoint URL
-                //if(portPathname===pathname) 
+                //if(portPathname===pathname)
                     return port.binding;
             }
         }
@@ -249,16 +249,16 @@ Server.prototype._envelope = function(body) {
         alias = findKey(defs.xmlns, ns),
         // XXX modif lib: add chargeboxidentity header
         cbIdHeader = this.cbId ?
-          "<tns:chargeBoxIdentity SOAP-ENV:mustUnderstand='true'>"+
+          "<tns:chargeBoxIdentity soap:mustUnderstand='true'>"+
             this.cbId +"</tns:chargeBoxIdentity>"
           : "",
         actionHeader = this.action ?
-          "<wsa5:Action SOAP-ENV:mustUnderstand='true'>"+
+          "<wsa5:Action soap:mustUnderstand='true'>"+
             this.action +"Response</wsa5:Action>"
           : "";
 
     var xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-            "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" " +            
+            "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" " +
                encoding +
                this.wsdl.xmlnsInEnvelope + '>' +
                "<soap:Header>"+ cbIdHeader + actionHeader +"</soap:Header>" +
