@@ -272,7 +272,7 @@ Server.prototype._envelope = function(body) {
           : "",
         relatesTo = "<wsa:RelatesTo RelationshipType='http://www.w3.org/2005/08/addressing/reply' soap:mustUnderstand='true'>"+
             this.messageId
-            +"</wsa5:Action>";
+            +"</wsa5:RelatesTo>";
 
     var xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
             "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" " +
